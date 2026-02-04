@@ -23,17 +23,17 @@ info: ## Show application and environment info
 # Code Quality
 
 format: ## Format code with black and isort
-	poetry run black src/
-	poetry run isort src/
+	poetry run black platform_sdk/
+	poetry run isort platform_sdk/
 
 lint: ## Run flake8 linting
-	poetry run flake8 src/
+	poetry run flake8 platform_sdk/
 
 type-check: ## Run mypy type checking
-	poetry run mypy src/
+	poetry run mypy platform_sdk/
 
 security: ## Run bandit security scanning (excluding external code)
-	poetry run bandit -r src/
+	poetry run bandit -r platform_sdk/
 
 quality: format lint type-check security ## Run all code quality checks
 

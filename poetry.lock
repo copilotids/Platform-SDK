@@ -1925,16 +1925,6 @@ ruamel-yaml = ">=0.17.21"
 typing-extensions = ">=4.7.1"
 
 [[package]]
-name = "sdnotify"
-version = "0.3.2"
-description = "A pure Python implementation of systemd's service notification protocol (sd_notify)"
-optional = false
-python-versions = "*"
-files = [
-    {file = "sdnotify-0.3.2.tar.gz", hash = "sha256:73977fc746b36cc41184dd43c3fe81323e7b8b06c2bb0826c4f59a20c56bb9f1"},
-]
-
-[[package]]
 name = "shellingham"
 version = "1.5.4"
 description = "Tool to Detect Surrounding Shell"
@@ -2218,4 +2208,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "53f90558d4eeb9878d91228f7cef3082a760d960e392724d66754e0d16f84a52"
+content-hash = "44132771237fd9df7ca9ee206771a6b7e8b34161ac8f339fc349e2ad63cbabde"
