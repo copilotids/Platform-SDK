@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Sequence
+from typing import Any, Callable, Sequence
 
 from .command_descriptor import CommandDescriptor, EventDescriptor
 
@@ -28,6 +28,21 @@ class ICommandGateway(ABC):
 
         :return: The available events.
         """
+
+    # Events
+
+    @abstractmethod
+    def listen_to_event(self, name: str | None, handler: Callable[[Any], None]) -> None:
+        """
+        Listen to an event emitted by the Platform.
+
+        :param name: The name of the event to listen to.
+            If None, listen to all events.
+        :param handler: The handler to be called when the event
+            is emitted.
+        """
+
+    # Commands
 
     @abstractmethod
     def dispatch_command(
@@ -60,7 +75,7 @@ class ICommandGateway(ABC):
         """
 
     @abstractmethod
-    async def dispatch_and_await_result(
+    async def dispatch_command_and_await_result(
         self,
         name: str,
         payload: Any,
