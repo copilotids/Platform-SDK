@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Sequence
 
 from .command_descriptor import CommandDescriptor
 
@@ -55,10 +55,11 @@ class ICommandGateway(ABC):
         :return: The result of the command.
         """
 
+    @property
     @abstractmethod
-    def available_commands(self) -> list[CommandDescriptor]:
+    def available_commands(self) -> Sequence[CommandDescriptor]:
         """
-        List all available commands the Platform can process.
+        Get all available commands the Platform can process.
 
         :return: The available commands.
         """

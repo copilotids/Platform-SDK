@@ -10,30 +10,11 @@ class CommandDescriptor(BaseModel):
     """
     The name of the command.
     """
-    payload: BaseModel
+    payload: type[BaseModel]
     """
     The payload schema of the command.
     """
-    result: BaseModel
+    result: type[BaseModel]
     """
     The result schema of the command.
     """
-
-
-# descriptor = CommandDescriptor(
-#     name="user.create",
-#     payload=BaseModel.model_validate(
-#         {
-#             "email": str,
-#             "name": str,
-#             "surname": str,
-#         },
-#     ),
-#     result=BaseModel.model_validate(
-#         {
-#             "email": str,
-#             "name": str,
-#             "surname": str,
-#         },
-#     ),
-# )
