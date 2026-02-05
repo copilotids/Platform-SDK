@@ -33,3 +33,9 @@ class CommandDescriptor(BaseModel):
     """
     The result schema of the command.
     """
+    exceptions: list[type[Exception]] | None = None
+    """
+    The possible exceptions that can be raised
+    when executing the command.
+    None means no exceptions are expected.
+    """

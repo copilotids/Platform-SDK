@@ -93,5 +93,6 @@ class ICommandGateway(ABC):
         :param generator_id: The identifier of the generator of the command.
         :param transaction_id: Optional identifier of the transaction
             to which the command belongs.
-        :return: The result of the command.
+        :return: The command result or an exception according to the
+            command definition.
         """
