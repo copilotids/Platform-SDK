@@ -1,6 +1,5 @@
 .PHONY: help install format lint type-check security
 .PHONY: clean bump-patch bump-minor bump-major bump-build release
-.PHONY: deb upload
 
 .DEFAULT_GOAL := help
 
@@ -112,24 +111,3 @@ release-major: check ## Create a major release
 	poetry run bump2version major
 	git push origin master --tags
 	@echo "✅ Major release created! Version: $$(poetry version -s)"
-
-
-# ------------------------------------------------------------------------
-# Deb creation and upload
-
-deb:
-	/bin/bash deploy/scripts/utility/create_deb.sh
-
-
-NAME := platform-sdk
-VERSION := $(shell cat VERSION)
-PACKAGE_NAME := $(NAME)_$(VERSION).deb
-PACKAGE_NAME_LATEST := $(NAME).deb
-OWNCLOUD := https://owncloud.designcoaching.net
-
-upload:
-	ls -l deploy/builds/*deb
-	curl --fail -u ids:ids -X PUT -H "Content-Type: multipart/form-data" \
-	--data-binary "@deploy/builds/${PACKAGE_NAME}" ${OWNCLOUD}/remote.php/webdav/artefacts/${NAME}/${PACKAGE_NAME}
-	curl --fail -u ids:ids -X PUT -H "Content-Type: multipart/form-data" \
-	--data-binary "@deploy/builds/${PACKAGE_NAME}" ${OWNCLOUD}/remote.php/webdav/artefacts/latest/${PACKAGE_NAME_LATEST}
