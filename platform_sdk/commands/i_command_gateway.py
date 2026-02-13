@@ -42,6 +42,21 @@ class ICommandGateway(ABC):
             is emitted.
         """
 
+    @abstractmethod
+    async def await_event(
+        self, handler: Callable[[Any], bool], timeout: float
+    ) -> object:
+        """
+        Await an event emitted by the Platform.
+
+        :param handler: The handler to be called when the event is emitted.
+            It should return True if the event is the one we are
+            waiting for, False otherwise.
+        :param timeout: The maximum seconds to wait for the event.
+        :return: The event.
+        :raises TimeoutError: If the event is not emitted within the timeout.
+        """
+
     # Commands
 
     @abstractmethod
