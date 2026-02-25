@@ -32,7 +32,11 @@ class ICommandGateway(ABC):
     # Events
 
     @abstractmethod
-    def listen_to_event(self, name: str | None, handler: Callable[[Any], None]) -> None:
+    def listen_to_event(
+        self,
+        name: str | None,
+        handler: Callable[[Any], None],
+    ) -> None:
         """
         Listen to an event emitted by the Platform.
 
