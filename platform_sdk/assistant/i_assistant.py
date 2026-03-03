@@ -38,20 +38,27 @@ class IAssistant(ABC):
     Protocol defining the minimal interface an AI assistant must
     implement in order to be used within the Platform.
 
-    An AI assistant relies on a knowledge model to process user questions
-    and provide answers. The model is represented as a Pydantic BaseModel,
-    allowing for structured data handling and validation.
+    An AI assistant relies on a knowledge model to process requests
+    and provide answers.
+    The model is represented as a Pydantic BaseModel, allowing for
+    structured data handling and validation.
     """
 
     @abstractmethod
     async def invoke(
-        self, question: str | IAssistantChat
+        self,
+        request: str | IAssistantChat,
+        request_contextual_data: dict[str, Any] | None,
     ) -> tuple[str, BaseModel, BaseModel]:
         """
-        Invoke the assistant on the provided question.
+        Invoke the assistant on the provided request.
 
-        :param question: The user question to process, either as a
-            simple string or as the full chat history including the question.
+        :param request: The request to process, either as a
+            simple string or as the full chat history including the request.
+        :param request_contextual_data: Additional information to be used when
+            processing the request (e.g., user profile information, system
+            state, etc.). The assistant can choose to ignore this data if
+            not relevant for the request processing.
         :return: A tuple containing the assistant response,
             the model before the execution, and the model after the execution.
         """
