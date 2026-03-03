@@ -1,5 +1,5 @@
 .PHONY: help install format lint type-check security
-.PHONY: clean bump-patch bump-minor bump-major bump-build release
+.PHONY: clean bump-patch bump-minor bump-major bump-build
 
 .DEFAULT_GOAL := help
 
@@ -11,40 +11,33 @@ help: ## Show this help message
 
 info: ## Show application and environment info
 	@echo "🔧 Platform SDK Development Environment"
-	@echo "Python version: $$(poetry run python --version)"
-	@echo "Poetry version: $$(poetry --version)"
+	@echo "Python version: $$(uv run python --version)"
+	@echo "UV version: $$(uv --version)"
 	@echo ""
 	@echo "📦 Project Dependencies:"
-	@poetry show --tree --only main | head -10
+	@uv tree --depth 1
 
 
 # ------------------------------------------------------------------------
 # Code Quality
 
-format: ## Format code with black and isort
-	poetry run black platform_sdk/
-	poetry run isort platform_sdk/
+format: ## Format code with ruff
+	uv run ruff format platform_sdk/
+	uv run ruff check --select I --fix platform_sdk/
 
-lint: ## Run flake8 linting
-	poetry run flake8 platform_sdk/
+lint: ## Run ruff linting
+	uv run ruff check platform_sdk/
 
 type-check: ## Run mypy type checking
-	poetry run mypy platform_sdk/
+	uv run mypy platform_sdk/
 
-security: ## Run bandit security scanning (excluding external code)
-	poetry run bandit -r platform_sdk/
+security: ## Run ruff security scanning (bandit rules)
+	uv run ruff check --select S platform_sdk/
 
 quality: format lint type-check security ## Run all code quality checks
 
 check: quality ## Run all quality checks
 	@echo "✅ All checks passed!"
-
-
-# ------------------------------------------------------------------------
-# Setup all dependencies
-
-install: ## Install dependencies with Poetry
-	poetry install
 
 
 # ------------------------------------------------------------------------
@@ -63,51 +56,18 @@ clean: ## Clean temporary files and caches
 # Versioning
 
 bump-patch: ## Bump patch version (e.g., 1.0.0 → 1.0.1)
-	poetry run bump2version patch
+	uv run bump2version patch
 
 bump-minor: ## Bump minor version (e.g., 1.0.0 → 1.1.0)
-	poetry run bump2version minor
+	uv run bump2version minor
 
 bump-major: ## Bump major version (e.g., 1.0.0 → 2.0.0)
-	poetry run bump2version major
+	uv run bump2version major
 
 bump-build: ## Bump build version (e.g., 1.0.0 → 1.0.0+1)
-	poetry run bump2version build
+	uv run bump2version build
 
 version: ## Show current version
-	@echo "Current version: $$(poetry version -s)"
+	@echo "Current version: $$(cat VERSION)"
 	@echo "Git tags:"
 	@git tag --sort=-version:refname | head -5
-
-
-# ------------------------------------------------------------------------
-# Release Management
-
-release: check ## Create a release (run checks, bump minor version, push tags)
-	@echo "🚀 Creating release..."
-	@echo "Current version: $$(poetry version -s)"
-	@read -p "Bump version (patch/minor/major) [minor]: " bump_type; \
-	bump_type=$${bump_type:-minor}; \
-	echo "Bumping $$bump_type version..."; \
-	poetry run bump2version $$bump_type
-	@echo "Pushing tags and commits..."
-	git push origin master --tags
-	@echo "✅ Release created! New version: $$(poetry version -s)"
-
-release-patch: check ## Create a patch release
-	@echo "🚀 Creating patch release..."
-	poetry run bump2version patch
-	git push origin master --tags
-	@echo "✅ Patch release created! Version: $$(poetry version -s)"
-
-release-minor: check ## Create a minor release
-	@echo "🚀 Creating minor release..."
-	poetry run bump2version minor
-	git push origin master --tags
-	@echo "✅ Minor release created! Version: $$(poetry version -s)"
-
-release-major: check ## Create a major release
-	@echo "🚀 Creating major release..."
-	poetry run bump2version major
-	git push origin master --tags
-	@echo "✅ Major release created! Version: $$(poetry version -s)"
