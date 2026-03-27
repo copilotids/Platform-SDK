@@ -4,7 +4,7 @@ from typing import Any, Callable, Sequence
 from .command_descriptor import CommandDescriptor, EventDescriptor
 
 
-class ICommandGateway(ABC):
+class CommandGateway(ABC):
     """
     Command gateway definition.
     It allows the communication with the Alchemy Platform from
