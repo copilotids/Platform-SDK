@@ -37,9 +37,8 @@ class AssistantSpecifications:
 class AssistantResponse:
     """
     The assistant response to a request, including the
-    response text, the model before and after processing the
-    request, and any contextual input or output data used
-    or generated during the request processing.
+    contextual input and output data used/generated
+    during the request processing.
     """
 
     response: str
