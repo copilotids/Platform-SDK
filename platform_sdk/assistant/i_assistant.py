@@ -27,7 +27,7 @@ class AssistantSpecifications:
     """
     The version of the assistant.
     """
-    chat_model_name: str
+    llm_name: str
     """
     The name of the LLM used by the assistant.
     """
@@ -77,23 +77,6 @@ class Assistant(ABC):
         """
 
     @abstractmethod
-    async def invoke(
-        self,
-        request: str | AssistantChat,
-        request_additional_info: Optional[dict],
-    ) -> AssistantResponse:
-        """
-        Invoke the assistant on the provided request.
-
-        :param request: The request to process, either as a
-            simple string or as the full chat history including the request.
-        :param request_additional_info: Additional information to be used when
-            processing the request (e.g., user profile, web pages, ...).
-            The assistant can choose to ignore this data if not relevant.
-        :return: The assistant response.
-        """
-
-    @abstractmethod
     async def set_model(self, model: BaseModel) -> None:
         """
         Change the current assistant knowledge model.
@@ -108,4 +91,21 @@ class Assistant(ABC):
         without blocking the assistant invocation.
 
         :return: The exported model and its extension.
+        """
+
+    @abstractmethod
+    async def invoke(
+        self,
+        request: AssistantChat,
+        request_additional_info: Optional[dict],
+    ) -> AssistantResponse:
+        """
+        Invoke the assistant on the provided request.
+
+        :param request: The full chat history, where the user's
+            current request is included as the final message.
+        :param request_additional_info: Additional information to be used when
+            processing the request (e.g., user profile, web pages, ...).
+            The assistant can choose to ignore this data if not relevant.
+        :return: The assistant response.
         """
