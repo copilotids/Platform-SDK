@@ -1,48 +1,34 @@
-from dataclasses import dataclass
 from functools import wraps
 from typing import Any, Callable, Optional
 
 
-@dataclass(frozen=True)
-class PluginSpecifications:
-    """
-    Protocol defining the minimal interface for a plugin
-    specification.
-    """
-
-    name: str
-    """
-    The name of the plugin.
-    """
-    version: str
-    """
-    The version of the plugin.
-    """
-
-
 def alchemy_plugin(
-    specs: PluginSpecifications,
+    plugin_name: str,
+    plugin_version: str,
     extra_info: Optional[dict[str, Any]] = None,
 ) -> Callable[[Callable[[dict[str, Any]], Any]], Callable[[dict[str, Any]], Any]]:
     """
     Mark a function as the plugin entry point, providing its
-    specifications and optional extra information used for plugin
-    registration and management.
+    specifications and optional extra information used for
+    plugin registration and management.
 
-    :param specs: The specifications of the plugin.
+    :param plugin_name: The name of the plugin.
+    :param plugin_version: The version of the plugin.
     :param extra_info: Optional additional information about the plugin.
-    :return: A decorator that wraps the plugin entry point function.
+    :return: A decorator that wraps the plugin entry point function
+        and returns its output along with the plugin
+        specifications and extra information.
     """
 
     def decorator(
         func: Callable[[dict[str, Any]], Any],
     ) -> Callable[[dict[str, Any]], Any]:
-        # Preserves the original function's name and docstring
+
         @wraps(func)
         def wrapper(
             params: dict[str, Any],
-        ) -> tuple[Any, PluginSpecifications, Optional[dict[str, Any]]]:
-            return func(params), specs, extra_info
+        ) -> tuple[Any, str, str, Optional[dict[str, Any]]]:
+            return func(params), plugin_name, plugin_version, extra_info
 
         return wrapper
 
