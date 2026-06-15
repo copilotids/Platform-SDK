@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -33,9 +35,8 @@ class CommandDescriptor(BaseModel):
     """
     The result schema of the command.
     """
-    exceptions: list[type[Exception]] | None = None
+    exceptions: Optional[list[type[Exception]]] = None
     """
-    The possible exceptions that can be raised
-    when executing the command.
+    The exceptions that can be raised when executing the command.
     None means no exceptions are expected.
     """

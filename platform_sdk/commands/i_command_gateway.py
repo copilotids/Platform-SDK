@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Optional, Sequence
 
 from .command_descriptor import CommandDescriptor, EventDescriptor
 
@@ -34,7 +34,7 @@ class CommandGateway(ABC):
     @abstractmethod
     def listen_to_event(
         self,
-        name: str | None,
+        name: Optional[str],
         handler: Callable[[Any], None],
     ) -> None:
         """
@@ -70,7 +70,7 @@ class CommandGateway(ABC):
         payload: Any,
         producer_id: str,
         generator_id: str,
-        transaction_id: str | None = None,
+        transaction_id: Optional[str] = None,
         broadcast: bool = False,
     ) -> None:
         """
@@ -100,7 +100,7 @@ class CommandGateway(ABC):
         payload: Any,
         producer_id: str,
         generator_id: str,
-        transaction_id: str | None = None,
+        transaction_id: Optional[str] = None,
     ) -> Any:
         """
         Dispatch a command to the Platform and await its result.
