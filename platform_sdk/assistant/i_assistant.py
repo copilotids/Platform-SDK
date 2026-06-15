@@ -27,7 +27,7 @@ class AssistantSpecifications:
     """
     The version of the assistant.
     """
-    llm_name: str
+    chat_model_name: str
     """
     The name of the LLM used by the assistant.
     """
