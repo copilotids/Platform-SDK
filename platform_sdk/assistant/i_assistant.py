@@ -97,7 +97,7 @@ class Assistant(ABC):
     async def invoke(
         self,
         request: AssistantChat,
-        request_additional_info: Optional[dict],
+        request_additional_info: Optional[dict] = None,
     ) -> AssistantResponse:
         """
         Invoke the assistant on the provided request.
