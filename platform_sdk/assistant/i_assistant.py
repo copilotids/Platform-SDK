@@ -96,14 +96,15 @@ class Assistant(ABC):
     @abstractmethod
     async def invoke(
         self,
-        request: AssistantChat,
+        request: str | AssistantChat,
         request_additional_info: Optional[dict] = None,
     ) -> AssistantResponse:
         """
         Invoke the assistant on the provided request.
 
-        :param request: The full chat history, where the user's
-            current request is included as the final message.
+        :param request: The user request or the full chat history,
+            where the user's current request is included as the final
+            message.
         :param request_additional_info: Additional information to be used when
             processing the request (e.g., user profile, web pages, ...).
             The assistant can choose to ignore this data if not relevant.
