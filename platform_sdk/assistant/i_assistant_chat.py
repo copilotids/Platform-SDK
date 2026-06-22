@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 
 @dataclass(frozen=True)
@@ -18,7 +18,7 @@ class AssistantChatMessage:
     """
     The content of the message.
     """
-    metadata: Optional[dict]
+    metadata: Optional[dict[str, Any]] = None
     """
     Optional metadata associated with the message.
     """
@@ -28,10 +28,14 @@ class AssistantChatMessage:
 class AssistantChat:
     """
     Protocol defining the minimal interface for a chat exchanged between
-    a user/system and an AI assistant.
+    a user or system and an AI assistant.
     """
 
     messages: list[AssistantChatMessage]
     """
     The list of messages exchanged in the chat.
+    """
+    metadata: Optional[dict[str, Any]] = None
+    """
+    Optional metadata associated with the chat.
     """
