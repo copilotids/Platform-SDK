@@ -6,9 +6,8 @@ from .command_descriptor import CommandDescriptor, EventDescriptor
 
 class CommandGateway(ABC):
     """
-    Command gateway definition.
-    It allows the communication with the Alchemy Platform from
-    external systems.
+    Abstract interface for communicating with the Alchemy Platform
+    from external systems.
     """
 
     @property
