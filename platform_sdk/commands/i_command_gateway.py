@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Optional, Sequence
+from typing import Any, Awaitable, Callable, Optional, Sequence
 
 from .command_descriptor import CommandDescriptor, EventDescriptor
 
@@ -34,31 +34,38 @@ class CommandGateway(ABC):
     @abstractmethod
     def listen_to_event(
         self,
-        name: Optional[str],
-        handler: Callable[[Any], None],
+        handler: Callable[[Any], Awaitable[None] | None],
+        filter_by_names: Optional[set[str]] = None,
     ) -> None:
         """
-        Listen to an event emitted by the Platform.
+        Listen to an event emitted by the Platform and
+        invoke the handler.
 
-        :param name: The name of the event to listen to.
-            If None, listen to all events.
         :param handler: The handler to be called when the event
-            is emitted.
+            is received.
+            It can be a coroutine or a synchronous function.
+        :param filter_by_names: The names of the events to listen to.
+            If None, all events will be listened to.
         """
 
     @abstractmethod
     async def await_event(
-        self, handler: Callable[[Any], bool], timeout: float
+        self,
+        event_filter: Callable[[Any], bool],
+        timeout_seconds: float,
     ) -> object:
         """
-        Await an event emitted by the Platform.
+        Await an event emitted by the Platform that matches the
+        `event_filter`.
 
-        :param handler: The handler to be called when the event is emitted.
-            It should return True if the event is the one we are
-            waiting for, False otherwise.
-        :param timeout: The maximum seconds to wait for the event.
-        :return: The event.
-        :raises TimeoutError: If the event is not emitted within the timeout.
+        :param event_filter: A callable that takes an event and
+            returns True if the event matches the filter,
+            False otherwise.
+        :param timeout_seconds: The maximum seconds (> 0) to wait for
+            the event.
+        :return: The event that matches the filter.
+        :raises TimeoutError: If the event is not received within
+            the timeout.
         """
 
     # Commands
