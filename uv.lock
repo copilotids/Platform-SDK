@@ -574,8 +574,8 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "bump2version", specifier = ">=1.0.1" },
-    { name = "mypy", specifier = ">=2.3.0" },
-    { name = "ruff", specifier = ">=0.16.1" },
+    { name = "mypy", specifier = ">=2.4.1" },
+    { name = "ruff", specifier = ">=0.17.4" },
     { name = "safety", specifier = ">=3.8.1" },
 ]
 
