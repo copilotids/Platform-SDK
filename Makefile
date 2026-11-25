@@ -1,5 +1,5 @@
 .PHONY: help install format lint type-check security
-.PHONY: clean bump-patch bump-minor bump-major bump-build
+.PHONY: clean bump-patch bump-minor bump-major bump-pre bump-set version
 
 .DEFAULT_GOAL := help
 
@@ -56,18 +56,22 @@ clean: ## Clean temporary files and caches
 # Versioning
 
 bump-patch: ## Bump patch version (e.g., 1.0.0 → 1.0.1)
-	uv run bump2version patch
+	uv run bumpuv patch
 
 bump-minor: ## Bump minor version (e.g., 1.0.0 → 1.1.0)
-	uv run bump2version minor
+	uv run bumpuv minor
 
 bump-major: ## Bump major version (e.g., 1.0.0 → 2.0.0)
-	uv run bump2version major
+	uv run bumpuv major
 
-bump-build: ## Bump build version (e.g., 1.0.0 → 1.0.0+1)
-	uv run bump2version build
+bump-pre: ## Bump pre-release number, or patch if not a pre-release (e.g., 1.0.0a1 → 1.0.0a2)
+	uv run bumpuv bump
+
+bump-set: ## Set an explicit version (e.g., make bump-set V=2.0.0a1)
+	@test -n "$(V)" || (echo "Usage: make bump-set V=<version>" && exit 1)
+	uv run bumpuv $(V)
 
 version: ## Show current version
-	@echo "Current version: $$(cat VERSION)"
+	@echo "Current version: $$(uv version)"
 	@echo "Git tags:"
 	@git tag --sort=-version:refname | head -5
