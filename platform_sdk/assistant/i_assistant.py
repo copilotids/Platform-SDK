@@ -71,7 +71,7 @@ class Assistant(ABC):
     async def invoke(
         self,
         request: str | AssistantChat,
-        request_additional_info: Optional[dict] = None,
+        request_additional_info: Optional[dict[str, Any]] = None,
     ) -> AssistantResponse:
         """
         Invoke the assistant on the provided request.
@@ -81,6 +81,6 @@ class Assistant(ABC):
             message.
         :param request_additional_info: Additional information to be used when
             processing the request (e.g., user profile, web pages, ...).
-            The assistant can choose to ignore this data if not relevant.
+            The assistant could ignore this data if not relevant.
         :return: The assistant response.
         """
