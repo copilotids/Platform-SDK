@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from pydantic import BaseModel
 
-from .i_assistant_chat import AssistantChat
+from .i_assistant_chat import AssistantChat, AssistantMessage
 
 
 @dataclass(frozen=True)
@@ -15,19 +15,6 @@ class AssistantSpecifications:
     """The name of the assistant."""
     version: str
     """The version of the assistant."""
-
-
-@dataclass(frozen=True)
-class AssistantResponse:
-    """
-    The assistant response to a request, including additional information
-    generated during the processing of the request.
-    """
-
-    response: str
-    """The response to the request."""
-    additional_info: Optional[dict[str, Any]] = None
-    """Additional information generated when answering to the request."""
 
 
 class Assistant(ABC):
@@ -72,7 +59,7 @@ class Assistant(ABC):
         self,
         request: str | AssistantChat,
         request_additional_info: Optional[dict[str, Any]] = None,
-    ) -> AssistantResponse:
+    ) -> AssistantMessage:
         """
         Invoke the assistant on the provided request.
 
