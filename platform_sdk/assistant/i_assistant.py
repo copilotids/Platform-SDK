@@ -8,10 +8,10 @@ from .i_assistant_chat import AssistantChat, AssistantMessage
 
 
 @dataclass(frozen=True, kw_only=True)
-class ChosenLLM:
-    """The LLM chosen to handle a specific request."""
+class ChosenModel:
+    """Language model (LLM) chosen to handle a specific request."""
 
-    llm_name: str
+    name: str
     """The name of the language model."""
     effort: Optional[str] = None
     """The effort level for the language model, if applicable."""
@@ -54,7 +54,7 @@ class Assistant(ABC):
         self,
         request: str | AssistantChat,
         request_additional_info: Optional[dict[str, Any]] = None,
-        models_to_use: Optional[dict[str, ChosenLLM]] = None,
+        models_to_use: Optional[dict[str, ChosenModel]] = None,
     ) -> AssistantMessage:
         """
         Invoke the assistant on the provided request.
@@ -65,8 +65,8 @@ class Assistant(ABC):
         :param request_additional_info: Additional information to be used when
             processing the request (e.g., user profile, web pages, ...).
             The assistant could ignore this data if not relevant.
-        :param models_to_use: Optional dictionary mapping roles to the chosen LLMs
-            for handling the request.
-            If None, default LLM for each role will be used.
+        :param models_to_use: Optional dictionary mapping roles to the
+            chosen models (LLMs) for handling the request.
+            If None, default model for each role will be used.
         :return: The assistant response.
         """
