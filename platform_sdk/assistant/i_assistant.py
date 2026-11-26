@@ -17,16 +17,6 @@ class ChosenLLM:
     """The effort level for the language model, if applicable."""
 
 
-@dataclass(frozen=True)
-class AssistantSpecifications:
-    """Protocol defining the minimal interface for an assistant specification."""
-
-    name: str
-    """The name of the assistant."""
-    version: str
-    """The version of the assistant."""
-
-
 class Assistant(ABC):
     """
     Protocol defining the minimal interface an assistant must implement in order to
@@ -36,11 +26,6 @@ class Assistant(ABC):
     The model is based on Pydantic ``BaseModel``, allowing for structured data
     handling and validation.
     """
-
-    @property
-    @abstractmethod
-    def specifications(self) -> AssistantSpecifications:
-        """:return: The assistant specifications."""
 
     @property
     @abstractmethod

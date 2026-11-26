@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from functools import wraps
-from typing import Any, Callable, Optional, Sequence
+from typing import Any, Callable, Mapping, Optional, Sequence
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -23,14 +23,14 @@ class SupportedLLM:
     """The effort level supported by the language model, if applicable."""
 
 
-RoleMap = Optional[dict[Role, Sequence[SupportedLLM]]]
-ExtraInfo = Optional[dict[str, Any]]
+RoleMap = Optional[Mapping[Role, Sequence[SupportedLLM]]]
+ExtraInfo = Optional[Mapping[str, Any]]
 
 
 def alchemy_plugin(
     plugin_name: str,
     plugin_version: str,
-    supported_llms: RoleMap = None,
+    supported_models: RoleMap = None,
     extra_info: ExtraInfo = None,
 ) -> Callable[[Callable[[dict[str, Any]], Any]], Callable[[dict[str, Any]], Any]]:
     """
@@ -39,11 +39,11 @@ def alchemy_plugin(
 
     :param plugin_name: The name of the plugin.
     :param plugin_version: The version of the plugin.
-    :param supported_llms: Optional dictionary mapping roles to their supported
-        language models.
+    :param supported_models: Optional dictionary mapping roles to their supported
+        language models (LLMs).
     :param extra_info: Optional additional information about the plugin.
     :return: A decorator that wraps the plugin entry point function
-        and returns its output with the plugin specifications, supported LLMs,
+        and returns its output with the plugin specifications, supported models,
         and extra information.
     """
 
@@ -55,7 +55,13 @@ def alchemy_plugin(
         def wrapper(
             params: dict[str, Any],
         ) -> tuple[Any, str, str, RoleMap, ExtraInfo]:
-            return func(params), plugin_name, plugin_version, supported_llms, extra_info
+            return (
+                func(params),
+                plugin_name,
+                plugin_version,
+                supported_models,
+                extra_info,
+            )
 
         return wrapper
 
