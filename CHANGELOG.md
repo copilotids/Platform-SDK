@@ -1,12 +1,13 @@
 # Changelog 
 
 
-## Specializes chat's message type (2026-11-25)
+## Specializes chat's message type (2026-11-26)
 ### Version 1.4.0
 
 - Breaking change: splits `AssistantMessage` and `UserMessage` into separate classes.
 - Fix: the `Assistant` interface now returns `AssistantMessage`.
 - Fix: removes LLM from assistant specifications.
+- Refactor: removes ``AssistantSpecifications`` from the `Assistant` interface.
 
 
 ## Adds support for configurable LLMs (2026-10-11) 
